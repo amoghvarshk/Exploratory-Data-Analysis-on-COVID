@@ -36,32 +36,3 @@ join PortfolioProject..CovidVaccinations$ vac
 	 and vac.new_vaccinations is not null
 	 order by 1,2,3
 
- -- CTE
-
-with popvsvac (continent, location,date,population, new_vaccinations, rollingvaccinations)
-as
- (
-select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
-sum(cast(vac.new_vaccinations as int)) over (partition by dea.location order by dea.location, dea.date) as rollingvaccinations
-from PortfolioProject..CovidDeaths$ dea
-join PortfolioProject..CovidVaccinations$ vac
-on dea.location = vac.location
-and dea.date = vac.date
-where dea.continent is not null
-and vac.new_vaccinations is not null
- )
-select*, (rollingvaccinations/population)*100 as rollingvaccinationspercentage
-from popvsvac
-
--- creating views - permanent creating of table
-create view rollingvaccinationspercentage as
-select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
-sum(cast(vac.new_vaccinations as int)) over (partition by dea.location order by dea.location, dea.date) as rollingvaccinations
-from PortfolioProject..CovidDeaths$ dea
-join PortfolioProject..CovidVaccinations$ vac
-on dea.location = vac.location
-and dea.date = vac.date
-where dea.continent is not null
-and vac.new_vaccinations is not null
-select * from rollingvaccinationspercentage
-
