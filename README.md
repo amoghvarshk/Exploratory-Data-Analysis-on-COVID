@@ -1,0 +1,1 @@
+Created a database in SQL to analyze Covid-19 data, including deaths and vaccinations worldwide, using various SQL features such as joins, temp tables, aggregate functions, and data type conversions.A dashboard was built in Tableau to report on the findings of the exploratory data analysis of the Covid-19 data.
